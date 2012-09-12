@@ -16,14 +16,14 @@ function [x, it, r_h] = jacobi(A, b, x0, maxit, tol)
                     suma += -A(i, j) * x0(j);            
                 end
             end
-        
+                  
             # Formula 7.4
             x(i) = ( suma + b(i) ) / A(i, i);
                     
         end
 
         # Criterio de comparacion del Burden (pag 439)
-        error = norm(x - x0, inf) / norm(x);
+        error = criterio_error(x, x0);
         r_h = b - A * x;
         
         if (error < tol)

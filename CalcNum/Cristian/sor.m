@@ -5,7 +5,7 @@
 
 function [x, it, r_h] = sor(A, b, x0, maxit, tol, w)
 
-   n = size(A)(1);
+    n = size(A)(1);
     x = zeros(1, n)';
 
     for it = 1 : maxit
@@ -21,14 +21,14 @@ function [x, it, r_h] = sor(A, b, x0, maxit, tol, w)
             for j = i + 1 : n
                 suma -= A(i, j) * x0(j);
             end
-        
+            
             # Algoritmo 7.3 y diapositiva
-            x(i) = w * ( suma + b(i) ) / A(i, i) + (1 - w) * x0;
+            x(i) = w * ( suma + b(i) ) / A(i, i) + (1 - w) * x0(i);
                     
         end
 
         # Criterio de comparacion del Burden (pag 439)
-        error = norm(x - x0, inf) / norm(x);
+        error = criterio_error(x, x0);
         r_h = b - A * x;
         
         if (error < tol)

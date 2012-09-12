@@ -1,6 +1,6 @@
 #! /usr/bin/octave -qf
 
-#@TODO a leer algo al respecto antes de hacerlo :O
+#@TODO hacerlo :_
 
 function [x, it, r_h] = cg(A, b, x0)
 

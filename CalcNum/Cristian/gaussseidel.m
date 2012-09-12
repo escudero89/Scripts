@@ -27,7 +27,7 @@ function [x, it, r_h] = gaussseidel(A, b, x0, maxit, tol)
         end
 
         # Criterio de comparacion del Burden (pag 439)
-        error = norm(x - x0, inf) / norm(x);
+        error = criterio_error(x, x0);
         r_h = b - A * x;
         
         if (error < tol)

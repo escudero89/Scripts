@@ -38,18 +38,26 @@ b_6 = [ 24 30 -24 ]';
 A_7 = [ 0.2 0.1 1 1 0 ; 0.1 4 -1 1 -1 ; 1 -1 60 0 -2 ; 1 1 0 8 4 ; 0 -1 -2 4 700];
 b_7 = [ 1 2 3 4 5 ]';
 
+# Para cholesky
+A_8 = [2 -1 0 ; -1 2 -1 ; 0 -1 2];
+
+##################
+# GLOBAL VARIABLES
+
 A = A_7;
 b = b_7;
 
 x0 = zeros(1, size(A)(1))';
 maxit = 100;
-tol = 10e-3;
+tol = 0.01;
 w = 1.25;
 
 #############
 # OPERACIONES
 
 gaussian = false;
+cholesky = false;
+iterativo = true;
 
 if (gaussian)
 
@@ -64,11 +72,20 @@ if (gaussian)
     
 end
 
-disp "Jacobi:"
-[x, it, r_h] = jacobi(A, b, x0, maxit, tol)
+if (cholesky)
+    disp "Factorizacion de Cholesky:"
+    [C] = cholesky(A)    
+end
 
-disp "Gauss-Seidel:"
-[x, it, r_h] = gaussseidel(A, b, x0, maxit, tol)
+if (iterativo)
 
-disp "Sor:"
-[x, it, r_h] = gaussseidel(A, b, x0, maxit, tol, w)
+    disp "Jacobi:"
+    [x, it, r_h] = jacobi(A, b, x0, maxit, tol)
+
+    disp "Gauss-Seidel:"
+    [x, it, r_h] = gaussseidel(A, b, x0, maxit, tol)
+
+    disp "Sor:"
+    [x, it, r_h] = sor(A, b, x0, maxit, tol, w)
+    
+end
