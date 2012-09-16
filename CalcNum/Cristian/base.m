@@ -88,4 +88,7 @@ if (iterativo)
     disp "Sor:"
     [x, it, r_h] = sor(A, b, x0, maxit, tol, w)
     
+    disp "Gradiente Conjugado:"
+    [x, it, r_h] = cg(A, b, x0, maxit, tol)
+    
 end

@@ -3,7 +3,7 @@
 # Con w e (0, 1) => metodo sub-relajacion
 # Con w e (1, 2) => metodo sobre-relajacion
 
-function [x, it, r_h] = sor(A, b, x0, maxit, tol, w)
+function [x, it, r_h] = sor(A, b, x0, maxit, tol, w, mensaje = false)
 
     n = size(A)(1);
     x = zeros(1, n)';
@@ -32,7 +32,10 @@ function [x, it, r_h] = sor(A, b, x0, maxit, tol, w)
         r_h = b - A * x;
         
         if (error < tol)
-            disp "Salio por error < tolerancia";
+            if (mensaje)
+                disp "Salio por error < tolerancia";
+            end
+            
             return;            
         end
                     
@@ -41,7 +44,10 @@ function [x, it, r_h] = sor(A, b, x0, maxit, tol, w)
     
     end
     
-    disp "Salio por maxit";
+    if (mensaje)
+        disp "Salio por maxit";
+    end
+    
     return;
     
 endfunction

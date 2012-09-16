@@ -1,6 +1,6 @@
 #! /usr/bin/octave -qf
 
-function [x, it, r_h] = jacobi(A, b, x0, maxit, tol) 
+function [x, it, r_h] = jacobi(A, b, x0, maxit, tol, mensaje = false)
 
     n = size(A)(1);
     x = zeros(1, n)';
@@ -27,7 +27,10 @@ function [x, it, r_h] = jacobi(A, b, x0, maxit, tol)
         r_h = b - A * x;
         
         if (error < tol)
-            disp "Salio por error < tolerancia";
+            if (mensaje)
+                disp "Salio por error < tolerancia";
+            end
+            
             return;            
         end
                     
@@ -36,7 +39,10 @@ function [x, it, r_h] = jacobi(A, b, x0, maxit, tol)
     
     end
     
-    disp "Salio por maxit";
+    if (mensaje)
+        disp "Salio por maxit";
+    end
+    
     return;
 
 endfunction
