@@ -1,0 +1,21 @@
+function [x, h] = newton(f, f_prima, x0, kmax, tol) 
+
+	for k = 1 : kmax
+
+		x = x0 - f(x0) / f_prima(x0);
+
+		h(k) = f(x);
+
+		if (h(k) < tol)
+			disp 'Salio por < tolerancia.';
+			return;
+		end
+
+		x0 = x;
+
+	end
+
+	disp 'Salio por maxit.';
+	return;
+
+end
