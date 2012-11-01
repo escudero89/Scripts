@@ -12,13 +12,18 @@ function [a0 a1 error] = minimos_cuadrados(x, y)
 	plot(x, y, 'ro');
 
 	% Y ahora la linea de tendencia P(x) = a_1 * x + a_0
-	P = a1 * x + a0;
+	x_sort = sort(x);
+	P = a1 * x_sort + a0;
 
-	plot(x, P, 'b');
+	plot(x_sort, P, 'b');
+
+	grid; xlabel('l'); ylabel('F(l)');
+	xlim([6 16]); ylim([0 10]);
+
 	hold off;
 
 	% Calculamos el error
-	error = sum((y - (a1 * x + a0)).^2);
+	error = sum((y - (a1 * x + a0)).^2)/length(x);
 	
 end
 
@@ -44,16 +49,16 @@ function [a0 a1] = get_coeff(x, y)
 
 end
 
-xbase = [1 : 10];
-ybase = [1.3 3.5 4.2 5.0 7 8.8 10.1 12.5 13 15.6];
-
 ybase = [7.0 9.4 12.3];
 xbase = [2 4 6];
 
+figure(1);
 [a0 a1 error] = minimos_cuadrados(ybase, xbase)
 
-ybase = [8.3 11.3 14.4 15.9];
-xbase = [3 5 8 10];
+% Le agregamos datos adicionales
+ybase = [ybase 8.3 11.3 14.4 15.9];
+xbase = [xbase 3 5 8 10];
 
+figure(2);
 pause;
 [a0 a1 error] = minimos_cuadrados(ybase, xbase)

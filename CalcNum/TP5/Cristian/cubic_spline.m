@@ -33,7 +33,7 @@ function [a, b, c , d] = cubic_spline(x, f, sujeto = false, f_prima_a = 0.0, f_p
 
 	paso = 0.01;
 
-	color = ['r', 'g', 'b', 'c', 'm', 'y'];
+	color = ['r', 'g', 'b'];
 
 	clf;
 	hold on;
@@ -63,8 +63,11 @@ function [c, A] = get_c(h, a, sujeto = true, f_prima_a = 0.0, f_prima_b = 0.0)
 		% En los extremos valdra 1 si es el natural
 		A(1, 1) = A(n, n) = 1;
 	else
-		% En mi primer y ultimo elemento de la diagonal de A, hacemos cambios
+		% En mi primer y ultimo fila de la diagonal de A, hacemos cambios		
+		A(1, 2) = h(1);
 		A(1, 1) = 2 * h(1);
+		
+		A(n, n-1) = h(n - 1);
 		A(n, n) = 2 * h(n - 1);
 
 		% Tambien cambian los valores de b en los extremos

@@ -4,7 +4,7 @@ function [x,h] = biseccion(f, xmin, xmax, kmax, tol)
 	h = [];
 
 	for k = 1 : kmax
-		
+
 		if f(xmin) * f(xmax) > 0
 			disp 'No hay ceros en el intervalo.';
 			return;
@@ -15,18 +15,19 @@ function [x,h] = biseccion(f, xmin, xmax, kmax, tol)
 
 		if (abs(h(k)) < tol)
 			x = P;
-			disp 'Error < tolerancia.';
+			disp 'f(p) < tolerancia.';
 			return;
 		end
 
 		if (h(k) > 0)
-			xmin = P;
-		else 
 			xmax = P;
+		else 
+			xmin = P;
 		end
 	end
 	
 	x = P;
 	disp 'Superado maxit';
 	return;
+
 end

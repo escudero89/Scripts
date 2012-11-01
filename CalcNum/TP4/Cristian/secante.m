@@ -10,7 +10,7 @@ function [x, h] = secante(f, xmin, xmax, kmax, tol)
 
 		if (abs(h(k)) < tol)
 			x = p;
-			disp 'Error < tolerancia.';
+			disp 'f(p) < tolerancia.';
 			return;
 		end
 

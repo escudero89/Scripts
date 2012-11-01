@@ -3,10 +3,10 @@ function [x, h] = puntofijo(g, x0, kmax, tol)
 	for k = 1 : kmax
 
 		x = g(x0);
-		h(k) = x;
+		h(k) = x + x0;
 
-		if (abs(x - x0) < tol)
-			disp 'g(x) - x < tolerancia';
+		if (abs(h(k)) < tol)
+			disp 'g(x) < tolerancia';
 			return;
 		end
 

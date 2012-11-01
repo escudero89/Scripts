@@ -14,81 +14,142 @@ function [y] = f2_prima(x)
 end
 
 function [y] = f3_prima(x)
-	y = -cos(1 / x) / x + sin(1 / x) + 1
+	y = -cos(1 / x) / x + sin(1 / x) + 1;
 	return;
 end
 
-% Codigo base d esde aca
+% Para el punto fijo, g(x) = f(x) + x
 
-function show_something(x, h)
+function [g] = f1_puntofijo(x)
+	g = x - e5a_tan(x);
+	return;
+end
+
+function [g] = f2_puntofijo(x)
+	g = x - e5b_polinomio(x);
+	return;
+end
+
+function [g] = f3_puntofijo(x)
+	g = x - e5c_sin(x);
+	return;
+end
+
+% Codigo base desde aca
+
+function show_something(x, h, titlelabel = '', it = 1, fase = 1)
+
 	x
 	iteraciones = length(h)
 	toc;
 	
-	disp("-------------------------------------------------------------------");
+	disp('-------------------------------------------------------------------');
+#{
+	figure(1);
+	show_something_helper(x, h, titlelabel, it);
+	print(['img/' fase '/all_' fase '.png']);
+
+	figure(it);
+	show_something_helper(x, h, titlelabel, it);
+	print(['img/' fase '/' titlelabel '_' fase '.png']); 
+#}
+end
+
+function show_something_helper(x, h, titlelabel, it)
+	color = ['r', 'g', 'b', 'm', 'c'];
+
+	plot([1 : length(h)], log(h), color(it));
+
+	grid on;
+	xlabel('iteraciones');
+	ylabel('log(h)');
 end
 
 % Mis funciones son: e5a_tan, e5b_polinomio, e5c_sin
 
+% Para ploteo
+clf;
+close all;
+hold on;
+
 x_min_max = [-0.49 0.51 ];
 
-kmax = 10000;
+kmax = 100;
 tol = 10e-7;
 
 f1 = @e5a_tan;
 f2 = @e5b_polinomio;
 f3 = @e5c_sin;
 
+f1_puntofijo = @f1_puntofijo;
+f2_puntofijo = @f2_puntofijo;
+f3_puntofijo = @f3_puntofijo;
+
 f1_prima = @f1_prima;
 f2_prima = @f2_prima;
 f3_prima = @f3_prima;
 
-for k = 1 : 3
+metodos = [
+	'Biseccion'; 
+	'Punto fijo'; 
+	'Secante'; 
+	'Posicion falsa'; 
+	'Newton-Raphson'
+];
 
-	xmin = x_min_max(1);
-	xmax = x_min_max(2);
-	
-	x0 = xmin;
-	
-	f_prima = f1_prima;
+metodos_length = [9, 10, 7, 14, 14];
 
-	switch k
+% k varia entre 1 a 3
+k = 3;
+
+xmin = x_min_max(1);
+xmax = x_min_max(2);
+
+x0 = xmin;
+
+f_prima = f1_prima;
+
+switch k
+	case {1}
+		f = f1;
+		f_prima = f1_prima;
+		f_pf = f1_puntofijo;
+	case {2}
+		f = f2;
+		f_prima = f2_prima;
+		f_pf = f2_puntofijo;
+	case {3}
+		f = f3;
+		f_prima = f3_prima;
+		f_pf = f3_puntofijo;
+	otherwise
+		disp 'error.'
+end
+
+for met = 1 : 5
+	tic;
+	disp([metodos(met, 1:metodos_length(met)) ':']);
+
+	switch met
 		case {1}
-			f = f1;
-			f_prima = f1_prima;
+			[x, h] = biseccion(f, xmin, xmax, kmax, tol);
 		case {2}
-			f = f2;
-			f_prima = f2_prima;
+			[x, h] = puntofijo(f_pf, x0, kmax, tol);
 		case {3}
-			f = f3;
-			f_prima = f3_prima;
+			[x, h] = secante(f, xmin, xmax, kmax, tol);
+		case {4}
+			[x, h] = posicionfalsa(f, xmin, xmax, kmax, tol);
+		case {5}
+			[x, h] = newton(f, f_prima, x0, kmax, tol);
 		otherwise
-			disp "error."
+			disp 'error2.'
 	end
 
-	tic;
-	disp "Biseccion: "
-	[x, h] = biseccion(f, xmin, xmax, kmax, tol);
-	show_something(x, h);
+	show_something(x, h, metodos(met, 1:metodos_length(met)), met, num2str(k));
 
-	tic;
-	disp "Punto fijo: "
-	[x, h] = puntofijo(f, x0, kmax, tol);
-	show_something(x, h);
-	
-	tic;
-	disp "Secante: "	
-	[x, h] = secante(f, xmin, xmax, kmax, tol);
-	show_something(x, h);
-	
-	tic;
-	disp "Posicion falsa: "
-	[x, h] = posicionfalsa(f, xmin, xmax, kmax, tol);
-	show_something(x, h);
-	
-	tic;
-	disp "Newton-Raphson: "
-	[x, h] = newton(f, f_prima, x0, kmax, tol);
-	show_something(x, h);
-	
 end
+
+
+hold off;
+
+close all;

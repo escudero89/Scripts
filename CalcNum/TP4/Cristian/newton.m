@@ -9,7 +9,7 @@ function [x, h] = newton(f, f_prima, x0, kmax, tol)
 		h(k) = f(x);
 
 		if (abs(h(k)) < tol)
-			disp 'Salio por < tolerancia.';
+			disp 'f(x) < tolerancia.';
 			return;
 		end
 
